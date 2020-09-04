@@ -8,7 +8,11 @@ namespace Kommander.Data
 {
     public interface IKommanderRepo
     {
-        IEnumerable<Command> GetAppCommands();
+        //    Task<IEnumerable<Command>> GetAllCommands();
+        //    Task<Command> GetCommandById(int id);
+
+        IEnumerable<Command> GetAllCommands();
         Command GetCommandById(int id);
+
     }
 }
