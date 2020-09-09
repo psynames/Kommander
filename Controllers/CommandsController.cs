@@ -138,6 +138,25 @@ namespace Kommander.Controllers
 
         #endregion
 
+        #region DeleteCommand(int id)
+
+        //DELETE api/commands/{id}
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCommand(int id)
+        {
+            var commandModelFromRepo = _repo.GetCommandById(id);
+            if(commandModelFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            _repo.DeleteCommand(commandModelFromRepo);
+            _repo.SaveChanges();
+
+            return NoContent();
+        }
+        #endregion
+
         #endregion
     }
 }

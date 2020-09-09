@@ -78,6 +78,22 @@ namespace Kommander.Data
 
 
 
+
+
+        #endregion
+
+        #region DeleteCommand(Command cmd) 
+
+        public void DeleteCommand(Command cmd)
+        {
+            if(cmd == null)
+            {
+                 throw new ArgumentNullException(nameof(cmd));
+            }
+            _dbContext.Commands.Remove(cmd);
+
+        }
+
         #endregion
 
 
