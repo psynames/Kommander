@@ -6,6 +6,7 @@ using AutoMapper;
 using Kommander.Data;
 using Kommander.Dtos;
 using Kommander.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kommander.Controllers
@@ -83,6 +84,8 @@ namespace Kommander.Controllers
 
         #endregion
 
+        #region UpdateCommand(int id, CommandUpdateDto commandUpdateDto)
+
         //PUT api/commands/{id}
         [HttpPut("{id}")]
         public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdateDto)
@@ -101,6 +104,39 @@ namespace Kommander.Controllers
 
 
         }
+
+        #endregion
+
+        #region  PArtialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
+
+        //PATCH api/commands/{id}
+        [HttpPatch("{id}")]
+        public ActionResult PArtialCommandUpdate(
+            int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
+        {
+            var commandModelFromRepo = _repo.GetCommandById(id);
+            if (commandModelFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepo);
+            patchDoc.ApplyTo(commandToPatch, ModelState);
+
+            if (!TryValidateModel(commandToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(commandToPatch, commandModelFromRepo);
+            _repo.UpdateCommand(commandModelFromRepo);
+            _repo.SaveChanges();
+
+            return NoContent();
+
+        }
+
+        #endregion
 
         #endregion
     }

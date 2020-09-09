@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Newtonsoft.Json.Serialization;
 
 namespace Kommander
 {
@@ -31,6 +32,13 @@ namespace Kommander
             .GetConnectionString("KommanderKonnection")));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddControllers().AddNewtonsoftJson(s =>
+            {
+                s
+                .SerializerSettings
+                .ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,7 +14,7 @@ namespace Kommander.Profiles
         {
             CreateMap<Command, CommandReadDto>();
             CreateMap<CommandCreateDto, Command>();
-            CreateMap<CommandUpdateDto, Command>();
+            CreateMap<CommandUpdateDto, Command>().ReverseMap();
         }
     }
 }
