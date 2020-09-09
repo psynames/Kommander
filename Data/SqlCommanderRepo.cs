@@ -40,6 +40,15 @@ namespace Kommander.Data
 
         #endregion
 
+        #region  UpdateCommand(Command cmd)
+
+        public void UpdateCommand(Command cmd)
+        {
+            //doing nothing
+        }
+
+        #endregion
+
         #region GetAllCommands()
 
         public IEnumerable<Command> GetAllCommands()
@@ -67,7 +76,11 @@ namespace Kommander.Data
             return (_dbContext.SaveChanges() >= 0);
         }
 
+
+
         #endregion
+
+
 
         #endregion
 

@@ -2,7 +2,7 @@
 
 namespace Kommander.Dtos
 {
-    public class CommandCreateDto
+    public class CommandUpdateDto
     {
         //public int Id { get; set; }
         [Required]
