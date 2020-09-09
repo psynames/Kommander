@@ -14,8 +14,14 @@ namespace Kommander.Controllers
     [ApiController]
     public class CommandsController : ControllerBase //without views support 
     {
+        #region PRIVATE READ ONLY FIELDS
+
         private readonly IKommanderRepo _repo;
         private readonly IMapper _mapper;
+
+        #endregion
+
+        #region CONSTRUCTORS
 
         public CommandsController(
             IKommanderRepo repo,
@@ -25,6 +31,11 @@ namespace Kommander.Controllers
             _mapper = mapper;
         }
 
+        #endregion
+
+        #region METHODS
+
+        #region GetAllCommands()
 
         //GET api/commands
         [HttpGet]
@@ -35,8 +46,12 @@ namespace Kommander.Controllers
             return Ok(commandsdto);
         }
 
+        #endregion
+
+        #region GetCommandById(int id)
+
         //GET api/commands/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetCommandById")]
         public ActionResult<CommandReadDto> GetCommandById(int id)
         {
             var command = _repo.GetCommandById(id);
@@ -47,5 +62,24 @@ namespace Kommander.Controllers
             }
             return NotFound();
         }
+
+        #endregion
+
+        //POST api/commands
+
+        [HttpPost]
+        public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto commandCreateDto)
+        {
+            var commandModel = _mapper.Map<Command>(commandCreateDto);
+            _repo.CreateCommand(commandModel);
+            _repo.SaveChanges();
+
+            var commandReadDto = _mapper.Map<CommandReadDto>(commandModel);
+
+            return CreatedAtRoute(nameof(GetCommandById),
+                new {Id = commandReadDto.Id}, commandReadDto);
+        }
+
+        #endregion
     }
 }
